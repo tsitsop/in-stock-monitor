@@ -18,6 +18,7 @@ def loopRequest(products):
 	
 	# check the url for each product until it is found
 	while not all(found):
+		print("About to search for products...")
 		for p in range(len(products)):
 			if found[p]:
 				# if it's been > 1hr since we first saw it in stock, check again 
@@ -37,18 +38,19 @@ def loopRequest(products):
 				found[p] = True
 				time_found[p] = datetime.now()
 			time.sleep(random.randint(1, 5)) 
-
+		print("Finished searching... taking a short nap")
 		# semi-random wait period between every set of requests
 		time.sleep(random.randint(15, 30)) 
-
+		
     # if we have found all the products, let's sleep for an hour and then start looking again
-		#  - this means bot runs indefinitely 
-		time.sleep(3600)
-		loopRequest(products)
+	#  - this means bot runs indefinitely 
+	print("Found all the products... going to take an hour long nap")
+	time.sleep(3600)
+	loopRequest(products)
 
 def notify(product):
 	''' Send message to Discord Webhook '''
-	
+	print("Found a product! Time to notify the channel :)")
 	webhook = DiscordWebhook(url=STOCK_ALERT_WEBHOOK)
 	embed = DiscordEmbed(title=f'''{product.name} Available!''', description=product.toNotificationText())
 	
