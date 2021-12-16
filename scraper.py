@@ -1,3 +1,4 @@
+from secrets import GEORGE
 import requests
 from discord_webhook import DiscordWebhook, DiscordEmbed
 from datetime import datetime
@@ -18,7 +19,7 @@ def loopRequest(products):
 	
 	# check the url for each product until it is found
 	while not all(found):
-		print("About to search for products...")
+		print(datetime.now().strftime("%x %X") + ": About to search for products...")
 		for p in range(len(products)):
 			if found[p]:
 				# if it's been > 1hr since we first saw it in stock, check again 
@@ -30,6 +31,8 @@ def loopRequest(products):
 
 			product = products[p]
 			response = requests.get(url=product.url, headers=headers)
+			if response.status_code != requests.codes.ok:
+				notifyError(product.url, response.status_code)
 			page = response.content.decode()
 			search_result = page.find("Sold Out</button>")
 
@@ -38,19 +41,28 @@ def loopRequest(products):
 				found[p] = True
 				time_found[p] = datetime.now()
 			time.sleep(random.randint(1, 5)) 
-		print("Finished searching... taking a short nap")
+		print(datetime.now().strftime("%x %X") + ": Finished searching... taking a short nap")
 		# semi-random wait period between every set of requests
 		time.sleep(random.randint(15, 30)) 
 		
     # if we have found all the products, let's sleep for an hour and then start looking again
 	#  - this means bot runs indefinitely 
-	print("Found all the products... going to take an hour long nap")
+	print(datetime.now().strftime("%x %X") + ": Found all the products... going to take an hour long nap")
 	time.sleep(3600)
 	loopRequest(products)
 
+def notifyError(url, code):
+	''' Send errormessage to Discord Webhook '''
+	print(datetime.now().strftime("%x %X") + ": Error fetching data from URL")
+	webhook = DiscordWebhook(url=STOCK_ALERT_WEBHOOK)
+	embed = DiscordEmbed(title=f'''{GEORGE}: Error Making Get Request''', description=f'''URL: {url}\Status Code: {code}''')
+	
+	webhook.add_embed(embed)
+	webhook.execute()
+
 def notify(product):
 	''' Send message to Discord Webhook '''
-	print("Found a product! Time to notify the channel :)")
+	print(datetime.now().strftime("%x %X") + ": Found a product! Time to notify the channel :)")
 	webhook = DiscordWebhook(url=STOCK_ALERT_WEBHOOK)
 	embed = DiscordEmbed(title=f'''{product.name} Available!''', description=product.toNotificationText())
 	
