@@ -1,7 +1,7 @@
 from secrets import GEORGE
 import requests
 from discord_webhook import DiscordWebhook, DiscordEmbed
-from datetime import datetime
+from datetime import datetime, timedelta
 import time
 import random
 from Product import Product
@@ -24,7 +24,7 @@ def loopRequest(products):
 			if found[p]:
 				# if it's been > 1hr since we first saw it in stock, check again 
 				diff = time_found[p] - datetime.now() 
-				if diff > 3600:
+				if diff > timedelta(hours=1):
 					found[p] = False
 				else:	
 					continue
@@ -110,6 +110,16 @@ def main():
 	# create list of products
 	products = generateProductList() 
 
-	loopRequest(products)
+	try:
+		loopRequest(products)
+	except Exception as e:
+		print(e)
+		
+		webhook = DiscordWebhook(url=STOCK_ALERT_WEBHOOK)
+		error_msg = f'''{GEORGE}: Unexpected error! Check the damn bot!'''
+		embed = DiscordEmbed(title="Bot Error!", description=error_msg)
+		
+		webhook.add_embed(embed)
+		webhook.execute()
 
 main()
