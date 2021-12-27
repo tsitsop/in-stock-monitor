@@ -33,6 +33,7 @@ def loopRequest(products):
 			response = requests.get(url=product.url, headers=headers)
 			if response.status_code != requests.codes.ok:
 				notifyError(product.url, response.status_code)
+				continue
 			page = response.content.decode()
 			search_result = page.find("Sold Out</button>")
 
@@ -55,7 +56,7 @@ def notifyError(url, code):
 	''' Send errormessage to Discord Webhook '''
 	print(datetime.now().strftime("%x %X") + ": Error fetching data from URL")
 	webhook = DiscordWebhook(url=STOCK_ALERT_WEBHOOK)
-	embed = DiscordEmbed(title=f'''{GEORGE}: Error Making Get Request''', description=f'''URL: {url}\Status Code: {code}''')
+	embed = DiscordEmbed(title=f'''Error Making Get Request''', description=f'''{GEORGE}\nURL: {url}\nStatus Code: {code}''')
 	
 	webhook.add_embed(embed)
 	webhook.execute()
