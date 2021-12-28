@@ -23,7 +23,7 @@ def loopRequest(products):
 		for p in range(len(products)):
 			if found[p]:
 				# if it's been > 1hr since we first saw it in stock, check again 
-				diff = time_found[p] - datetime.now() 
+				diff = datetime.now() - time_found[p] 
 				if diff > timedelta(hours=1):
 					found[p] = False
 				else:	
