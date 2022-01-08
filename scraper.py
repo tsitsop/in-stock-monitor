@@ -1,5 +1,7 @@
 from secrets import GEORGE
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util import Retry
 from discord_webhook import DiscordWebhook, DiscordEmbed
 from datetime import datetime, timedelta
 import time
@@ -17,6 +19,13 @@ def loopRequest(products):
 	found = [False] * len(products)
 	time_found = [None] * len(products)
 	
+	# configure session
+	session = requests.Session()
+	retry = Retry(connect=3, backoff_factor=0.5)
+	adapter = HTTPAdapter(max_retries=retry)
+	session.mount('http://', adapter)
+	session.mount('https://', adapter)
+
 	# check the url for each product until it is found
 	while not all(found):
 		print(datetime.now().strftime("%x %X") + ": About to search for products...")
@@ -30,7 +39,7 @@ def loopRequest(products):
 					continue
 
 			product = products[p]
-			response = requests.get(url=product.url, headers=headers)
+			response = session.get(url=product.url, headers=headers)
 			if response.status_code != requests.codes.ok:
 				notifyError(product.url, response.status_code)
 				continue
@@ -41,7 +50,7 @@ def loopRequest(products):
 				notify(product)
 				found[p] = True
 				time_found[p] = datetime.now()
-			time.sleep(random.randint(1, 3))
+			time.sleep(random.randint(1,4))
 		
     # if we have found all the products, let's sleep for an hour and then start looking again
 	#  - this means bot runs indefinitely 
