@@ -41,10 +41,7 @@ def loopRequest(products):
 				notify(product)
 				found[p] = True
 				time_found[p] = datetime.now()
-			time.sleep(random.randint(1, 5)) 
-		print(datetime.now().strftime("%x %X") + ": Finished searching... taking a short nap")
-		# semi-random wait period between every set of requests
-		time.sleep(random.randint(15, 30)) 
+			time.sleep(random.randint(1, 3))
 		
     # if we have found all the products, let's sleep for an hour and then start looking again
 	#  - this means bot runs indefinitely 
@@ -78,30 +75,8 @@ def generateProductList():
 			url="https://www.bestbuy.com/site/nvidia-geforce-rtx-3080-10gb-gddr6x-pci-express-4-0-graphics-card-titanium-and-black/6429440.p?skuId=6429440"
 		),
 		Product(
-			name="Xbox Series X",
-			url="https://www.bestbuy.com/site/microsoft-xbox-series-x-1tb-console-black/6428324.p?skuId=6428324"
-		),
-		Product(
 			name="RTX 3070 FE",
 			url="https://www.bestbuy.com/site/nvidia-geforce-rtx-3070-8gb-gddr6-pci-express-4-0-graphics-card-dark-platinum-and-black/6429442.p?skuId=6429442"
-		),
-		
-		Product(
-			name="RTX 3080 Ti AORUS XTREME",
-			url="https://www.bestbuy.com/site/gigabyte-nvidia-geforce-rtx-3080-ti-aorus-xtreme-12gb-gddr6x-pci-express-4-0-graphics-card/6468933.p?skuId=6468933"
-		),
-		Product(
-			name="RTX 3080 Ti AORUS MASTER",
-			url="https://www.bestbuy.com/site/gigabyte-nvidia-geforce-rtx-3080-ti-aorus-master-12gb-gddr6x-pci-express-4-0-graphics-card/6468932.p?skuId=6468932"
-		),
-		
-		Product(
-			name="PlayStation 5",
-			url="https://www.bestbuy.com/site/sony-playstation-5-console/6426149.p?skuId=6426149"
-		),
-		Product(
-			name="PlayStation 5 (digital edition)",
-			url="https://www.bestbuy.com/site/sony-playstation-5-digital-edition-console/6430161.p?skuId=6430161"
 		)
 	]
 
