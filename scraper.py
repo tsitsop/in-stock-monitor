@@ -26,9 +26,13 @@ def loopRequest(products):
 	session.mount('http://', adapter)
 	session.mount('https://', adapter)
 
+	ct = 0
 	# check the url for each product until it is found
 	while not all(found):
-		for p in range(len(products)):
+		if ct == 200:
+			print(datetime.now().strftime("%x %X") + ": Still searching...")
+			ct = 0
+		for p in range(len(products)): # sleeps ~2.5s per product 
 			if found[p]:
 				# if it's been > 1hr since we first saw it in stock, check again 
 				diff = datetime.now() - time_found[p] 
@@ -50,6 +54,7 @@ def loopRequest(products):
 				found[p] = True
 				time_found[p] = datetime.now()
 			time.sleep(random.randint(1,4))
+		ct += 1
 		
     # if we have found all the products, let's sleep for an hour and then start looking again
 	#  - this means bot runs indefinitely 
