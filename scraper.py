@@ -28,7 +28,6 @@ def loopRequest(products):
 
 	# check the url for each product until it is found
 	while not all(found):
-		print(datetime.now().strftime("%x %X") + ": About to search for products...")
 		for p in range(len(products)):
 			if found[p]:
 				# if it's been > 1hr since we first saw it in stock, check again 
@@ -54,7 +53,6 @@ def loopRequest(products):
 		
     # if we have found all the products, let's sleep for an hour and then start looking again
 	#  - this means bot runs indefinitely 
-	print(datetime.now().strftime("%x %X") + ": Found all the products... going to take an hour long nap")
 	time.sleep(3600)
 	loopRequest(products)
 
