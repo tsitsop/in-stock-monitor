@@ -83,20 +83,12 @@ def generateProductList():
 	''' Generate the list of products that we're interested in '''
 	products = [
 		Product(
-			name="RTX 3080 FE",
-			url="https://www.bestbuy.com/site/nvidia-geforce-rtx-3080-10gb-gddr6x-pci-express-4-0-graphics-card-titanium-and-black/6429440.p?skuId=6429440"
-		),
-		Product(
-			name="RTX 3070 FE",
-			url="https://www.bestbuy.com/site/nvidia-geforce-rtx-3070-8gb-gddr6-pci-express-4-0-graphics-card-dark-platinum-and-black/6429442.p?skuId=6429442"
-		),
-		Product(
-			name="Xbox Series X",
-			url="https://www.bestbuy.com/site/microsoft-xbox-series-x-1tb-console-black/6428324.p?skuId=6428324"
-		),
-		Product(
 			name="PS5 Digital Edition",
 			url="https://www.bestbuy.com/site/sony-playstation-5-digital-edition-console/6430161.p?skuId=6430161"
+		),
+		Product(
+			name="PS5 Physical Disc Edition",
+			url="https://www.bestbuy.com/site/sony-playstation-5-console/6426149.p?skuId=6426149"
 		)
 	]
 
